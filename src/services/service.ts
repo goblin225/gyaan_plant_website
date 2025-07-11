@@ -3,7 +3,7 @@ import { axiosClient } from "../api/axiosClient"
 // Auth
 
 export const login = async (authData: any) => {
-    const response = await axiosClient.post('/auth/admin-login', authData);
+    const response = await axiosClient.post('/auth/login', authData);
     return response.data;
 };
 

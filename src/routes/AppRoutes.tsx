@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { LoginPage } from '../pages/auth/LoginPage';
 import { BrowsePage } from '../pages/BrowsePage';
@@ -10,8 +10,9 @@ import { useAuth } from '../context/AuthContext';
 import { useThemeStore } from '../store/themeStore';
 import { Header } from '../components/layout/Header';
 import Profile from '../pages/profile/Profile';
+import { ResumeWalkthrough } from '../pages/resume/ResumeWalkthrough';
+import { ResumeDashboard } from '../pages/resume/ResumeDashboard';
 
-// Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
@@ -19,6 +20,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 function AppRoutes() {
   const { theme } = useThemeStore();
+  const location = useLocation();
+
+  const hideHeaderRoutes = ['/resume'];
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
 
   React.useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -27,7 +32,7 @@ function AppRoutes() {
   return (
     <div className={theme}>
       <div className="min-h-screen bg-background text-foreground">
-        <Header />
+        {!shouldHideHeader && <Header />}
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -35,6 +40,8 @@ function AppRoutes() {
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/course/:courseId" element={<CoursePage />} />
+            <Route path="/resume" element={<ResumeWalkthrough />} />
+            <Route path="/resumedashboard" element={<ResumeDashboard />} />
             <Route 
               path="/dashboard" 
               element={

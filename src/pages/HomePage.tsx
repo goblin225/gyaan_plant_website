@@ -48,7 +48,6 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="relative py-20 px-4 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10">
         <div className="container mx-auto text-center space-y-8">
           <div className="space-y-4">
@@ -68,9 +67,11 @@ export const HomePage: React.FC = () => {
                 Explore Courses
               </Link>
             </Button>
-            {/* <Button variant="outline" size="lg" asChild>
-              <Link to="/signup">Start Free Trial</Link>
-            </Button> */}
+            <Button variant="outline" size="lg" asChild>
+              <Link to="/resume" target="_blank" rel="noopener noreferrer">
+                Build My Resume
+              </Link>
+            </Button>
           </div>
 
           {/* Stats */}

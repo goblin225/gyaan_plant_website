@@ -8,7 +8,6 @@ import {
 import { FileText, Sparkles, UploadCloud } from "lucide-react";
 import { Textarea } from "../ui/Textarea";
 import html2pdf from "html2pdf.js";
-import * as pdfjsLib from "pdfjs-dist";
 
 export const BaseResumeOptionsDialog = ({ open, setOpen }: any) => {
 
@@ -31,32 +30,32 @@ export const BaseResumeOptionsDialog = ({ open, setOpen }: any) => {
         }
     };
 
-    const parsePDF = async (file: any) => {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        let fullText = "";
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            const text = content.items
-                .map((item) => {
-                    if ('str' in item) {
-                        return (item as { str: string }).str;
-                    }
-                    return '';
-                })
-                .join(" ");
-            fullText += text + "\n";
-        }
-        return fullText;
-    };
+    // const parsePDF = async (file: any) => {
+    //     const arrayBuffer = await file.arrayBuffer();
+    //     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    //     let fullText = "";
+    //     for (let i = 1; i <= pdf.numPages; i++) {
+    //         const page = await pdf.getPage(i);
+    //         const content = await page.getTextContent();
+    //         const text = content.items
+    //             .map((item) => {
+    //                 if ('str' in item) {
+    //                     return (item as { str: string }).str;
+    //                 }
+    //                 return '';
+    //             })
+    //             .join(" ");
+    //         fullText += text + "\n";
+    //     }
+    //     return fullText;
+    // };
 
-    const handleParsedSubmit = async () => {
-        if (!resumeFile) return;
-        const text = await parsePDF(resumeFile);
-        setParsedResume(text);
-        setOpen(false);
-    };
+    // const handleParsedSubmit = async () => {
+    //     if (!resumeFile) return;
+    //     const text = await parsePDF(resumeFile);
+    //     setParsedResume(text);
+    //     setOpen(false);
+    // };
 
     const downloadAsPDF = () => {
         const element = document.getElementById("resume-output");
@@ -158,7 +157,7 @@ export const BaseResumeOptionsDialog = ({ open, setOpen }: any) => {
                             <button
                                 disabled={!resumeFile}
                                 className="mt-4 bg-primary text-white text-sm px-4 py-2 rounded disabled:opacity-50"
-                                onClick={handleParsedSubmit}
+                                // onClick={handleParsedSubmit}
                             >
                                 Continue →
                             </button>

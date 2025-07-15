@@ -29,13 +29,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ challengeId, onComplete 
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeSpent(prev => prev + 1);
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeSpent(prev => prev + 1);
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   if (!challenge) {
     return (

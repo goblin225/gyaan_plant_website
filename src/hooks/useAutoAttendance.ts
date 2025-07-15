@@ -1,21 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { markAttendance } from '../services/service';
 
 const useAutoAttendance = () => {
-    
-  const alreadyMarked = useRef(false);
-
   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
   const userId = user?.id || '';
 
   const mutation = useMutation({
     mutationFn: markAttendance,
     onSuccess: (data) => {
-      // console.log('Attendance marked:', data);
+      localStorage.setItem('attendance-marked', new Date().toDateString());
     },
     onError: (err) => {
-      // console.error('Attendance marking failed:', err);
+      console.error('Attendance marking failed:', err);
     }
   });
 
@@ -23,11 +20,15 @@ const useAutoAttendance = () => {
     const now = new Date();
     const hour = now.getHours();
 
-    if (hour >= 10 && hour < 11 && !alreadyMarked.current) {
+    const todayKey = new Date().toDateString();
+    const markedDate = localStorage.getItem('attendance-marked');
+
+    const alreadyMarkedToday = markedDate === todayKey;
+
+    if (hour >= 10 && hour < 11 && !alreadyMarkedToday) {
       mutation.mutate(userId);
-      alreadyMarked.current = true;
     }
-  }, []);
+  }, [mutation, userId]);
 
   return mutation;
 };

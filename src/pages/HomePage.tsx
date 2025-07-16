@@ -113,7 +113,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Featured Courses */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-white dark:bg-gray-950">
         <div className="container mx-auto">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl md:text-4xl font-bold">Featured Courses</h2>

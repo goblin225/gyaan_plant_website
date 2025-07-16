@@ -1,24 +1,28 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Clock, BookOpen, Play, CheckCircle, PlayCircle } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Card, CardContent } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
-import { VideoPlayer } from '../components/course/VideoPlayer';
-import { useCourseStore } from '../store/courseStore';
-import { useAuth } from '../context/AuthContext';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { courseById, enrollInCourse, lessonEnd, lessonStart } from '../services/service';
-import toast from 'react-hot-toast';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Clock, BookOpen, Play, CheckCircle, PlayCircle } from "lucide-react";
+import { Button } from "../components/ui/Button";
+import { Card, CardContent } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
+import { VideoPlayer } from "../components/course/VideoPlayer";
+import { useCourseStore } from "../store/courseStore";
+import { useAuth } from "../context/AuthContext";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  courseById,
+  enrollInCourse,
+  lessonEnd,
+  lessonStart,
+} from "../services/service";
+import toast from "react-hot-toast";
 
 export const CoursePage: React.FC = () => {
-
   const queryClient = useQueryClient();
   const { courseId } = useParams<{ courseId: string }>();
   const { markLessonComplete } = useCourseStore();
   const { isAuthenticated } = useAuth();
-  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-  const userId = user?.id || '';
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const userId = user?.id || "";
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const logIdRef = useRef<string | null>(null);
 
@@ -27,7 +31,7 @@ export const CoursePage: React.FC = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ['course', courseId],
+    queryKey: ["course", courseId],
     queryFn: () => courseById(courseId!, userId!),
     enabled: !!courseId,
   });
@@ -42,7 +46,10 @@ export const CoursePage: React.FC = () => {
   }, [selectedLesson, course?.lessons]);
 
   const selectedLessonData = useMemo(() => {
-    return course?.lessons?.find((lesson: any) => lesson._id === selectedLesson) || null;
+    return (
+      course?.lessons?.find((lesson: any) => lesson._id === selectedLesson) ||
+      null
+    );
   }, [selectedLesson, course?.lessons]);
 
   const handleLessonComplete = (lessonId: string) => {
@@ -51,30 +58,31 @@ export const CoursePage: React.FC = () => {
 
   const enrollMutation = useMutation({
     mutationFn: () => {
-      if (!courseId || !user?.id) throw new Error('Missing courseId or user id');
+      if (!courseId || !user?.id)
+        throw new Error("Missing courseId or user id");
       return enrollInCourse(courseId, user.id);
     },
     onSuccess: () => {
-      toast.success('Successfully enrolled in the course!');
-      queryClient.invalidateQueries({ queryKey: ['course', courseId] });
+      toast.success("Successfully enrolled in the course!");
+      queryClient.invalidateQueries({ queryKey: ["course", courseId] });
       setTimeout(() => {
         refetch();
       }, 300);
     },
     onError: (error) => {
-      console.error('Enrollment failed:', error);
+      console.error("Enrollment failed:", error);
     },
   });
 
   const startLessonMutation = useMutation({
     mutationFn: lessonStart,
     onSuccess: (data) => {
-      console.log('Lesson start success:', data.data);
+      console.log("Lesson start success:", data.data);
       logIdRef.current = data.data;
     },
     onError: (error) => {
-      console.error('Lesson start failed:', error);
-    }
+      console.error("Lesson start failed:", error);
+    },
   });
 
   const endLessonMutation = useMutation({
@@ -82,12 +90,12 @@ export const CoursePage: React.FC = () => {
     onSuccess: () => {
       if (selectedLessonData) {
         markLessonComplete(course?.id, selectedLessonData._id);
-        queryClient.invalidateQueries({ queryKey: ['course', courseId] });
+        queryClient.invalidateQueries({ queryKey: ["course", courseId] });
       }
     },
     onError: (error) => {
-      console.error('Lesson end failed:', error);
-    }
+      console.error("Lesson end failed:", error);
+    },
   });
 
   const handleEnroll = () => {
@@ -104,8 +112,12 @@ export const CoursePage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <Badge className="mb-4">{course?.category}</Badge>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{course?.title}</h1>
-              <p className="text-lg text-muted-foreground mb-6">{course?.description}</p>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                {course?.title}
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                {course?.description}
+              </p>
             </div>
 
             <div className="lg:col-span-1">
@@ -131,8 +143,15 @@ export const CoursePage: React.FC = () => {
                   )}
 
                   {isAuthenticated && !isEnrolled && (
-                    <Button className="w-full mt-4" size="lg" onClick={handleEnroll} disabled={enrollMutation.isPending}>
-                      {enrollMutation.isPending ? 'Enrolling...' : 'Enroll in this Course'}
+                    <Button
+                      className="w-full mt-4"
+                      size="lg"
+                      onClick={handleEnroll}
+                      disabled={enrollMutation.isPending}
+                    >
+                      {enrollMutation.isPending
+                        ? "Enrolling..."
+                        : "Enroll in this Course"}
                     </Button>
                   )}
 
@@ -160,8 +179,12 @@ export const CoursePage: React.FC = () => {
               isEnrolled ? (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-2xl font-bold mb-2">{selectedLessonData.title}</h2>
-                    <p className="text-muted-foreground">{selectedLessonData.description}</p>
+                    <h2 className="text-2xl font-bold mb-2">
+                      {selectedLessonData.title}
+                    </h2>
+                    <p className="text-muted-foreground">
+                      {selectedLessonData.description}
+                    </p>
                   </div>
                   <VideoPlayer
                     key={selectedLessonData?._id}
@@ -173,26 +196,34 @@ export const CoursePage: React.FC = () => {
                       startLessonMutation.mutate({
                         userId,
                         courseId: courseId,
-                        lessonId: selectedLessonData?._id
+                        lessonId: selectedLessonData?._id,
                       });
                     }}
                     onEnd={() => {
                       if (logIdRef.current) {
                         endLessonMutation.mutate({ logId: logIdRef.current });
                       } else {
-                        console.warn('⚠️ No logId to end!');
+                        console.warn("⚠️ No logId to end!");
                       }
                     }}
-                    onComplete={() => handleLessonComplete(selectedLessonData._id)}
+                    onComplete={() =>
+                      handleLessonComplete(selectedLessonData._id)
+                    }
                   />
                 </div>
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center">
                     <Play className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">Enroll to access this lesson</h3>
-                    <p className="text-muted-foreground">Please enroll in the course to watch the videos.</p>
-                    <Button className="mt-4" onClick={handleEnroll}>Enroll Now</Button>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Enroll to access this lesson
+                    </h3>
+                    <p className="text-muted-foreground">
+                      Please enroll in the course to watch the videos.
+                    </p>
+                    <Button className="mt-4" onClick={handleEnroll}>
+                      Enroll Now
+                    </Button>
                   </CardContent>
                 </Card>
               )
@@ -200,8 +231,13 @@ export const CoursePage: React.FC = () => {
               <Card>
                 <CardContent className="p-8 text-center">
                   <Play className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Select a lesson to start learning</h3>
-                  <p className="text-muted-foreground">Choose a lesson from the list to begin your learning journey.</p>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Select a lesson to start learning
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Choose a lesson from the list to begin your learning
+                    journey.
+                  </p>
                 </CardContent>
               </Card>
             )}
@@ -210,7 +246,9 @@ export const CoursePage: React.FC = () => {
           <div className="lg:col-span-1 sticky top-20 h-full overflow-y-auto max-h-[80vh] space-y-2">
             <h3 className="text-lg font-semibold mb-2">Lessons</h3>
             {course?.lessons?.map((lesson: any) => {
-              const isCompleted = lesson.isCompleted || courseData?.data?.completedLessons?.includes(lesson._id);
+              const isCompleted =
+                lesson.isCompleted ||
+                courseData?.data?.completedLessons?.includes(lesson._id);
               const isSelected = selectedLesson === lesson._id;
 
               return (
@@ -219,16 +257,32 @@ export const CoursePage: React.FC = () => {
                   onClick={() => isEnrolled && setSelectedLesson(lesson._id)}
                   disabled={!isEnrolled}
                   className={`block w-full text-left p-2 rounded-md text-sm border flex items-center justify-between transition
-        ${!isEnrolled ? 'opacity-50 cursor-not-allowed' : ''}
-        ${isCompleted && !isSelected ? 'border-green-600 text-green-700 font-semibold' : ''}
-        ${isSelected ? 'bg-primary text-white border-primary' : ''}
+        ${!isEnrolled ? "opacity-50 cursor-not-allowed" : ""}
+        ${
+          isCompleted && !isSelected
+            ? "border-green-600 text-green-700 font-semibold"
+            : ""
+        }
+        ${isSelected ? "bg-primary text-white border-primary" : ""}
       `}
                 >
                   <div className="flex items-center space-x-2">
                     {isCompleted ? (
-                      <CheckCircle className={`h-4 w-4 ${isCompleted && !isSelected ? 'border-green-600 text-green-700 font-semibold' : ''}`} />
+                      <CheckCircle
+                        className={`h-4 w-4 ${
+                          isCompleted && !isSelected
+                            ? "border-green-600 text-green-700 font-semibold"
+                            : ""
+                        }`}
+                      />
                     ) : (
-                      <PlayCircle className={`h-4 w-4 ${!isSelected ? 'border-green-600 text-gray-600 font-semibold' : ''}`} />
+                      <PlayCircle
+                        className={`h-4 w-4 ${
+                          !isSelected
+                            ? "border-green-600 text-gray-600 font-semibold"
+                            : ""
+                        }`}
+                      />
                     )}
                     <span>{lesson.title}</span>
                   </div>
@@ -236,6 +290,16 @@ export const CoursePage: React.FC = () => {
                 </button>
               );
             })}
+          {course.lessons?.length > 0 &&
+ course.lessons.every((lesson:any) => lesson.isCompleted) ? (
+   <Link 
+    to={`/question/${courseId}`}
+    target="blank"
+    className="bg-primary hover:bg-primary text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300 inline-block text-center"
+  >
+    Start Quiz
+  </Link>
+) : null}
           </div>
         </div>
       </div>

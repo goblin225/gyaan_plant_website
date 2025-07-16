@@ -12,6 +12,8 @@ import { Header } from '../components/layout/Header';
 import Profile from '../pages/profile/Profile';
 import { ResumeWalkthrough } from '../pages/resume/ResumeWalkthrough';
 import { ResumeDashboard } from '../pages/resume/ResumeDashboard';
+import GetQuestion from '../pages/GetQuestion';
+import LeaderPage from '../pages/LeaderPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -22,8 +24,11 @@ function AppRoutes() {
   const { theme } = useThemeStore();
   const location = useLocation();
 
-  const hideHeaderRoutes = ['/resume'];
-  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
+  // const hideHeaderRoutes = ['/resume'];
+  // const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
+  const shouldHideHeader = ['/resume', '/question'].some((route) =>
+  location.pathname === route || location.pathname.startsWith(`${route}/`)
+);
 
   React.useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -40,8 +45,10 @@ function AppRoutes() {
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/course/:courseId" element={<CoursePage />} />
+            <Route path="/question/:courseId" element={<GetQuestion />} />
             <Route path="/resume" element={<ResumeWalkthrough />} />
             <Route path="/resumedashboard" element={<ResumeDashboard />} />
+            <Route path="/leaderpage" element={<LeaderPage />} />
             <Route 
               path="/dashboard" 
               element={

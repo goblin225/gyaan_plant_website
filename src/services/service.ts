@@ -61,3 +61,18 @@ export const markAttendance = async (userId: any) => {
     const response = await axiosClient.post(`/attendance/mark-attendance/${userId}`);
     return response.data;
 };
+
+//Question
+
+export const getQuestion = async () => {
+    const response = await axiosClient.get(`/assessment/get-questions`);
+    return response.data;
+};
+export const getanswer = async (id:any,payload:any) => {
+    const response = await axiosClient.post(`assessment/${id}/submit`,payload);
+    return response.data;
+};
+export const getleaderboard = async () => {
+    const response = await axiosClient.get(`leader/get-leader`);
+    return response.data;
+};

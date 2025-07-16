@@ -30,21 +30,21 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({ quizId, courseId, 
   const maxAttempts = quiz?.maxAttempts || 3;
   const previousScore = userProgress[courseId]?.quizScores?.[quizId] || 0;
 
-  useEffect(() => {
-    if (quiz?.timeLimit && timeRemaining > 0 && !isCompleted) {
-      const timer = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            handleQuizComplete();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+  // useEffect(() => {
+  //   if (quiz?.timeLimit && timeRemaining > 0 && !isCompleted) {
+  //     const timer = setInterval(() => {
+  //       setTimeRemaining((prev) => {
+  //         if (prev <= 1) {
+  //           handleQuizComplete();
+  //           return 0;
+  //         }
+  //         return prev - 1;
+  //       });
+  //     }, 1000);
 
-      return () => clearInterval(timer);
-    }
-  }, [timeRemaining, isCompleted, quiz?.timeLimit]);
+  //     return () => clearInterval(timer);
+  //   }
+  // }, [timeRemaining, isCompleted, quiz?.timeLimit]);
 
   if (!quiz) {
     return (

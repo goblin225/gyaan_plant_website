@@ -3,7 +3,6 @@ import AppRoutes from './routes/AppRoutes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter } from 'react-router-dom';
-import AttendanceInitializer from './components/attendance/AttendanceInitializer';
 
 const queryClient = new QueryClient();
 
@@ -13,7 +12,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <AttendanceInitializer />
+          {/* <AttendanceInitializer /> */}
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>

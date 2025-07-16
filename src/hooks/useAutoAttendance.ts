@@ -1,35 +1,36 @@
-import { useMutation } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
-import { markAttendance } from '../services/service';
+// import { useMutation } from '@tanstack/react-query';
+// import { useEffect } from 'react';
+// import { markAttendance } from '../services/service';
 
-const useAutoAttendance = () => {
-    
-  const alreadyMarked = useRef(false);
+// const useAutoAttendance = () => {
+//   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+//   const userId = user?.id || '';
 
-  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-  const userId = user?.id || '';
+//   const mutation = useMutation({
+//     mutationFn: markAttendance,
+//     onSuccess: (data) => {
+//       localStorage.setItem('attendance-marked', new Date().toDateString());
+//     },
+//     onError: (err) => {
+//       console.error('Attendance marking failed:', err);
+//     }
+//   });
 
-  const mutation = useMutation({
-    mutationFn: markAttendance,
-    onSuccess: (data) => {
-      // console.log('Attendance marked:', data);
-    },
-    onError: (err) => {
-      // console.error('Attendance marking failed:', err);
-    }
-  });
+//   useEffect(() => {
+//     const now = new Date();
+//     const hour = now.getHours();
 
-  useEffect(() => {
-    const now = new Date();
-    const hour = now.getHours();
+//     const todayKey = new Date().toDateString();
+//     const markedDate = localStorage.getItem('attendance-marked');
 
-    if (hour >= 10 && hour < 11 && !alreadyMarked.current) {
-      mutation.mutate(userId);
-      alreadyMarked.current = true;
-    }
-  }, []);
+//     const alreadyMarkedToday = markedDate === todayKey;
 
-  return mutation;
-};
+//     if (hour >= 10 && hour < 11 && !alreadyMarkedToday) {
+//       mutation.mutate(userId);
+//     }
+//   }, [mutation, userId]);
 
-export default useAutoAttendance;
+//   return mutation;
+// };
+
+// export default useAutoAttendance;

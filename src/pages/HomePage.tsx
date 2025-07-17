@@ -68,7 +68,7 @@ export const HomePage: React.FC = () => {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
-              <Link to="/resume" target="_blank" rel="noopener noreferrer">
+              <Link to="/resumedashboard" target="_blank" rel="noopener noreferrer">
                 Build My Resume
               </Link>
             </Button>

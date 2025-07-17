@@ -86,14 +86,16 @@ export const Header: React.FC = () => {
 
         {/* Right Side */}
         <div className="flex items-center space-x-4">
+          {isAuthenticated &&
           <Link to={"/leaderpage"}>
           <div className="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-full text-sm">
             <Trophy className="h-4 w-4" />
             <span className="font-semibold">
-              {currentUserLeaderboard?.points} pts
+              {currentUserLeaderboard?.points||0} pts
             </span>
           </div>
           </Link>
+          }
 
           {/* Theme Toggle */}
           <Button

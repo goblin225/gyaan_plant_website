@@ -155,13 +155,13 @@ const navigate = useNavigate();
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950" >
       <div className="flex justify-between items-center mb-3">
         <img src={logo} className="w-26 h-10 pl-7 mt-3" alt="Logo" />
       </div>
-      <div className="max-w-3xl mx-auto p-6">
+      <div className="max-w-3xl mx-auto p-6 ">
         {allQuestions.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-4">
+          <div className="bg-white rounded-lg shadow-md p-4 dark:bg-gray-950">
             <h1 className="text-2xl text-center mb-2 text-primary font-bold">
               QUIZ
             </h1>
@@ -209,7 +209,7 @@ const navigate = useNavigate();
                           allQuestions[currentQuestionIndex]._id
                         ] === option
                           ? "bg-primary/10 border-primary text-primary"
-                          : "border-gray-200 hover:bg-gray-50"
+                          : "border-gray-200 hover:bg-gray-200 dark:bg-gray-950 dark:hover:bg-gray-900"
                       }`}
                     >
                       <input
@@ -227,21 +227,21 @@ const navigate = useNavigate();
                             option
                           )
                         }
-                        className="hidden"
+                        className="hidden "
                       />
                       <div
                         className={`flex items-center justify-center h-5 w-5 rounded-full border mr-3 ${
                           selectedAnswers[
                             allQuestions[currentQuestionIndex]._id
                           ] === option
-                            ? "border-primary bg-primary"
+                            ? "border-primary bg-primary "
                             : "border-gray-400"
                         }`}
                       >
                         {selectedAnswers[
                           allQuestions[currentQuestionIndex]._id
                         ] === option && (
-                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white "></div>
                         )}
                       </div>
                       <span className="ml-1">{option}</span>

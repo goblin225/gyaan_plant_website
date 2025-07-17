@@ -23,10 +23,6 @@ const LeaderPage = () => {
     userId = user?.id;
   }
 
-
-  
-  
-
   const currentUserLeaderboard = leaderData.find(
     (item:any) => item.userId === userId
   );

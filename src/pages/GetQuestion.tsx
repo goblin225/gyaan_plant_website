@@ -169,8 +169,6 @@ const GetQuestion = () => {
 
   const submitAssessment = async () => {
     try {
-      debugger;
-      // Prepare answers in the required format
       const formattedAnswers = [
         ...Object.entries(selectedAnswers).map(
           ([questionId, selectedOption]) => ({

@@ -74,9 +74,7 @@ export const HomePage: React.FC = () => {
             <Button  onClick={() => navigate("/resumedashboard")} variant="outline"  size="lg" asChild>
              Build My Resume
             </Button>
-            <Button onClick={() => navigate("/quiz")}  size="lg" asChild>
-              quiz
-            </Button>
+             
           </div>
 
           {/* Stats */}

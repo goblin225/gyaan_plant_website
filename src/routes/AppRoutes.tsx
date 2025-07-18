@@ -1,21 +1,25 @@
-import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { LoginPage } from '../pages/auth/LoginPage';
-import { BrowsePage } from '../pages/BrowsePage';
-import { CoursePage } from '../pages/CoursePage';
-import { DashboardPage } from '../pages/DashboardPage';
-import { HomePage } from '../pages/HomePage';
-import { useAuth } from '../context/AuthContext';
-import { useThemeStore } from '../store/themeStore';
-import { Header } from '../components/layout/Header';
-import Profile from '../pages/profile/Profile';
-import { ResumeWalkthrough } from '../pages/resume/ResumeWalkthrough';
-import { ResumeDashboard } from '../pages/resume/ResumeDashboard';
-import GetQuestion from '../pages/GetQuestion';
-import LeaderPage from '../pages/LeaderPage';
+import React from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { LoginPage } from "../pages/auth/LoginPage";
+import { BrowsePage } from "../pages/BrowsePage";
+import { CoursePage } from "../pages/CoursePage";
+import { DashboardPage } from "../pages/DashboardPage";
+import { HomePage } from "../pages/HomePage";
+import { useAuth } from "../context/AuthContext";
+import { useThemeStore } from "../store/themeStore";
+import { Header } from "../components/layout/Header";
+import Profile from "../pages/profile/Profile";
+import { ResumeWalkthrough } from "../pages/resume/ResumeWalkthrough";
+import { ResumeDashboard } from "../pages/resume/ResumeDashboard";
+import GetQuestion from "../pages/GetQuestion";
+import LeaderPage from "../pages/LeaderPage";
+import Quiz from "../pages/Quiz";
+import CodeEditorDemo from "../pages/CodeEditorDemo";
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
@@ -26,12 +30,13 @@ function AppRoutes() {
 
   // const hideHeaderRoutes = ['/resume'];
   // const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
-  const shouldHideHeader = ['/resume', '/question'].some((route) =>
-  location.pathname === route || location.pathname.startsWith(`${route}/`)
-);
+  const shouldHideHeader = ["/resume", "/question"].some(
+    (route) =>
+      location.pathname === route || location.pathname.startsWith(`${route}/`)
+  );
 
   React.useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   return (
@@ -49,32 +54,35 @@ function AppRoutes() {
             <Route path="/resume" element={<ResumeWalkthrough />} />
             <Route path="/resumedashboard" element={<ResumeDashboard />} />
             <Route path="/leaderpage" element={<LeaderPage />} />
-            <Route 
-              path="/dashboard" 
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/code-editor-demo" element={<CodeEditorDemo />} />
+            <Route
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <DashboardPage />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/my-learning" 
+            <Route
+              path="/my-learning"
               element={
                 <ProtectedRoute>
                   <DashboardPage />
                 </ProtectedRoute>
-              } 
+              }
             />
           </Routes>
         </main>
-        <Toaster 
+        <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              background: theme === 'dark' ? '#1f2937' : '#ffffff',
-              color: theme === 'dark' ? '#f9fafb' : '#111827',
-              border: theme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb',
+              background: theme === "dark" ? "#1f2937" : "#ffffff",
+              color: theme === "dark" ? "#f9fafb" : "#111827",
+              border:
+                theme === "dark" ? "1px solid #374151" : "1px solid #e5e7eb",
             },
           }}
         />

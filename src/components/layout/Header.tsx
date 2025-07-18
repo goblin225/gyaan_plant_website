@@ -17,6 +17,7 @@ import { useThemeStore } from "../../store/themeStore";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Avatar from "@radix-ui/react-avatar";
 import logo from "../../assets/images/gyaan_logo.png";
+import logoDark from "../../assets/images/GyaanPlant_dark.png";
 import { useAuth } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById, getleaderboard } from "../../services/service";
@@ -41,7 +42,7 @@ export const Header: React.FC = () => {
   });
 
   const leaderData = leader?.data || [];
- 
+
   const currentUserLeaderboard = leaderData.find(
     (item: any) => item.userId === userId
   );
@@ -58,7 +59,19 @@ export const Header: React.FC = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <img src={logo} className="w-16 h-10" />
+          {/* Light mode image */}
+          <img
+            src={logo}
+            className="w-16 h-10 block dark:hidden"
+            alt="Logo Light"
+          />
+
+          {/* Dark mode image */}
+          <img
+            src={logoDark}
+            className="w-16 h-10 hidden dark:block"
+            alt="Logo Dark"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -86,16 +99,16 @@ export const Header: React.FC = () => {
 
         {/* Right Side */}
         <div className="flex items-center space-x-4">
-          {isAuthenticated &&
-          <Link to={"/leaderpage"}>
-          <div className="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-full text-sm">
-            <Trophy className="h-4 w-4" />
-            <span className="font-semibold">
-              {currentUserLeaderboard?.points||0} pts
-            </span>
-          </div>
-          </Link>
-          }
+          {isAuthenticated && (
+            <Link to={"/leaderpage"}>
+              <div className="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-full text-sm">
+                <Trophy className="h-4 w-4" />
+                <span className="font-semibold">
+                  {currentUserLeaderboard?.points || 0} pts
+                </span>
+              </div>
+            </Link>
+          )}
 
           {/* Theme Toggle */}
           <Button

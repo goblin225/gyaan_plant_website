@@ -294,7 +294,6 @@ export const CoursePage: React.FC = () => {
  course.lessons.every((lesson:any) => lesson.isCompleted) ? (
    <Link 
     to={`/question/${courseId}`}
-    target="blank"
     className="bg-primary hover:bg-primary text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300 inline-block text-center"
   >
     Start Quiz
